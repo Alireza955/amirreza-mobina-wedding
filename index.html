@@ -19,7 +19,7 @@
     <title>دعوت‌نامه عروسی | مبینا و امیررضا</title>
     <link rel="preload" href="./assets/invitation/poster.webp" as="image" />
     <link rel="preload" href="./assets/invitation/invitation-card-embroidered.avif" as="image" type="image/avif" />
-    <link rel="stylesheet" href="./styles.css?v=4" />
+    <link rel="stylesheet" href="./styles.css?v=6" />
   </head>
   <body>
     <a class="details-link" href="#invitationDetails">مشاهده دعوت‌نامه</a>
@@ -61,7 +61,16 @@
           <button class="start-button" id="startButton" type="button" hidden>آغاز دعوت‌نامه</button>
         </div>
       </section>
-      <div id="invitationDetails" aria-hidden="true"></div>
+      <section class="message-card" id="invitationDetails" aria-label="دعوت ما برای شما">
+        <img src="./assets/invitation/love-message.webp" width="941" height="1672" loading="lazy" alt="با عشق آغاز کردیم، با عشق ادامه دادیم و حالا می‌خواهیم زیباترین شب زندگی‌مان را در کنار شما جشن بگیریم. حضور شما شادی این شب را برای ما کامل‌تر می‌کند." />
+      </section>
+      <section class="location-card" aria-label="آدرس مراسم">
+        <h2>به امید دیدارتان</h2>
+        <h3>تالار وصال</h3>
+        <p>جمعه ۱۴۰۵/۰۸/۰۸ · ساعت ۱۹ الی ۲۳</p>
+        <p id="venueAddress">خاله سرای ۵۷، خیابان شهید نسیم دوست، خیابان جلا آل احمد، نرسیده به روستای میانده</p>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=37.692611,49.007250" target="_blank" rel="noopener noreferrer">مسیریابی روی نقشه</a>
+      </section>
     </main>
 
     <audio id="backgroundMusic" preload="metadata" loop>
@@ -76,6 +85,6 @@
         </picture>
       </div>
     </noscript>
-    <script src="./app.js?v=4" defer></script>
+    <script src="./app.js?v=6" defer></script>
   </body>
 </html>

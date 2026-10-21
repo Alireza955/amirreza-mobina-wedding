@@ -97,6 +97,10 @@ body.is-loading { overflow: hidden; }
 .details-link { position: fixed; z-index: 110; top: 1rem; right: 1rem; color: white; background: #263329; padding: .7rem 1rem; border-radius: 2rem; }
 .invitation-details { max-width: 520px; margin: auto; padding: 2rem 1rem; text-align: center; background: #e8decd; color: #3d3429; }
 .invitation-details img { width: 100%; height: auto; }
+.message-card, .location-card { position: relative; max-width: 520px; margin: 0 auto; background: #e8decd; color: #594735; }
+.message-card img { display: block; width: 100%; height: auto; }
+.map-link { display: inline-block; align-self: center; padding: .6rem 1.5rem; margin-top: 1rem; border: 1px solid #8c755b; border-radius: 2rem; color: #594735; text-decoration: none; }
+.location-card { min-height: 100vh; min-height: 100svh; padding: 5rem 2rem; display: flex; flex-direction: column; justify-content: center; text-align: center; line-height: 2.2; border: 1rem double #d0bfa6; }
 
 .film-shade {
   position: absolute;

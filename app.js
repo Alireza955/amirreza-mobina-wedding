@@ -116,14 +116,13 @@ function updateScrollProgress() {
   const filmProgress = range(state.progress, 0, 0.84);
   state.targetTime = filmProgress * Math.max(state.duration - 0.035, 0);
 
-  const darken = range(state.progress, 0.76, 0.86);
   const cardReveal = range(state.progress, 0.855, 0.96);
 
-  dom.filmShade.style.opacity = String(mix(0, 1, darken));
-  dom.filmLayer.style.opacity = String(1 - range(state.progress, 0.86, 0.93));
+  dom.filmShade.style.opacity = "0";
+  dom.filmLayer.style.opacity = "1";
   dom.cardLayer.style.visibility = cardReveal > 0.002 ? "visible" : "hidden";
-  dom.cardLayer.style.opacity = String(cardReveal);
-  dom.cardLayer.style.transform = `scale(${mix(1.025, 1, cardReveal)})`;
+  dom.cardLayer.style.opacity = "1";
+  dom.cardLayer.style.transform = `translateY(${(1 - cardReveal) * 100}%)`;
   dom.scrollProgress.style.transform = `scaleX(${state.progress})`;
   dom.scrollCue.style.opacity = String(1 - range(state.progress, 0.76, 0.88));
 

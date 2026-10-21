@@ -1,4 +1,10 @@
 const $ = (selector) => document.querySelector(selector);
+const nativeMapLink = document.querySelector("#nativeMapLink");
+if (nativeMapLink && !/Android/i.test(navigator.userAgent)) {
+  nativeMapLink.href = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+    ? "https://maps.apple.com/?daddr=37.692611,49.007250&dirflg=d"
+    : "https://www.google.com/maps/dir/?api=1&destination=37.692611,49.007250";
+}
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 const range = (value, start, end) => clamp((value - start) / (end - start));
 const mix = (from, to, progress) => from + (to - from) * progress;

@@ -113,16 +113,11 @@ function updateScrollProgress() {
 
   // The film occupies the first 84% of the scroll. The remainder creates a
   // deliberate, quiet transition from its final black frame into the card.
-  const filmProgress = range(state.progress, 0, 0.84);
+  const filmProgress = range(state.progress, 0, 0.98);
   state.targetTime = filmProgress * Math.max(state.duration - 0.035, 0);
 
-  const cardReveal = range(state.progress, 0.855, 0.96);
-
-  dom.filmShade.style.opacity = "0";
+  dom.filmShade.style.opacity = String(range(state.progress, 0.9, 1));
   dom.filmLayer.style.opacity = "1";
-  dom.cardLayer.style.visibility = cardReveal > 0.002 ? "visible" : "hidden";
-  dom.cardLayer.style.opacity = "1";
-  dom.cardLayer.style.transform = `translateY(${(1 - cardReveal) * 100}%)`;
   dom.scrollProgress.style.transform = `scaleX(${state.progress})`;
   dom.scrollCue.style.opacity = String(1 - range(state.progress, 0.76, 0.88));
 

@@ -232,6 +232,16 @@ body.is-loading { overflow: hidden; }
   100% { transform: translateX(245%); }
 }
 
+/* A single flowing textile, with feathered joins instead of separate cards. */
+.invitation-scroll { position: relative; max-width: 520px; margin: 0 auto; background: #e8decd; overflow: hidden; }
+.invitation-scroll::before { content: ""; position: absolute; z-index: 3; inset: 0 0 auto; height: clamp(180px, 38vw, 300px); background: linear-gradient(#000 0%, rgba(0,0,0,.85) 20%, transparent 100%); pointer-events: none; }
+.woven-intro { margin: 0; padding-top: 100px; background: #e8decd; }
+.woven-intro img, .message-card img { display: block; width: 100%; height: auto; -webkit-mask-image: linear-gradient(transparent, #000 15%, #000 84%, transparent); mask-image: linear-gradient(transparent, #000 15%, #000 84%, transparent); }
+.message-card { margin-top: -12%; background: transparent; }
+.location-card { border: 0; background: transparent; min-height: 80vh; margin-top: -8%; padding-bottom: 6rem; }
+.invitation-scroll::after { content: ""; position: absolute; inset: 15% 4% 2%; border-left: 1px solid #cbbba0; border-right: 1px solid #cbbba0; pointer-events: none; opacity: .4; }
+@media (prefers-reduced-motion: reduce) { .experience { display: none; } .invitation-scroll::before { display: none; } }
+
 @keyframes cue-down {
   0%, 100% { opacity: 0.35; transform: translateY(-2px) rotate(45deg); }
   50% { opacity: 1; transform: translateY(4px) rotate(45deg); }

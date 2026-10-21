@@ -5,6 +5,10 @@ const mix = (from, to, progress) => from + (to - from) * progress;
 const VIDEO_FPS = 24;
 const FRAME_DURATION = 1 / VIDEO_FPS;
 const MIN_SEEK_INTERVAL_MS = 70;
+const ANDROID_FRAME_COUNT = 56;
+const ANDROID_FRAME_FPS = 8;
+const forceFrameMode = new URLSearchParams(window.location.search).has("forceFrames");
+const isAndroidFrameMode = /Android/i.test(navigator.userAgent) || forceFrameMode;
 
 const dom = {
   body: document.body,
@@ -12,6 +16,7 @@ const dom = {
   loaderPercent: $("#loaderPercent"),
   experience: $("#experience"),
   film: $("#weddingFilm"),
+  frameCanvas: $("#frameCanvas"),
   filmLayer: $("#filmLayer"),
   filmShade: $(".film-shade"),
   cardLayer: $("#cardLayer"),
@@ -33,6 +38,11 @@ const state = {
   ticking: false,
   seeking: false,
   lastSeekAt: 0,
+  useFrameSequence: isAndroidFrameMode,
+  requestedFrame: -1,
+  renderedFrame: -1,
+  frameCache: new Map(),
+  pendingFrames: new Map(),
   musicStarted: false,
   reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)"),
 };
@@ -131,8 +141,123 @@ function onScroll() {
   });
 }
 
+function frameUrl(index) {
+  return `./assets/invitation/frames/frame-${String(index + 1).padStart(3, "0")}.webp?v=3`;
+}
+
+function trimFrameCache(centerIndex) {
+  if (state.frameCache.size <= 9) return;
+  const indexes = [...state.frameCache.keys()].sort(
+    (left, right) => Math.abs(right - centerIndex) - Math.abs(left - centerIndex),
+  );
+
+  while (state.frameCache.size > 9 && indexes.length) {
+    state.frameCache.delete(indexes.shift());
+  }
+}
+
+function loadFrame(index) {
+  const safeIndex = Math.max(0, Math.min(ANDROID_FRAME_COUNT - 1, index));
+  if (state.frameCache.has(safeIndex)) return Promise.resolve(state.frameCache.get(safeIndex));
+  if (state.pendingFrames.has(safeIndex)) return state.pendingFrames.get(safeIndex);
+
+  const pending = new Promise((resolve, reject) => {
+    const image = new Image();
+    image.decoding = "async";
+    image.onload = () => {
+      state.pendingFrames.delete(safeIndex);
+      state.frameCache.set(safeIndex, image);
+      trimFrameCache(state.requestedFrame < 0 ? safeIndex : state.requestedFrame);
+      resolve(image);
+    };
+    image.onerror = () => {
+      state.pendingFrames.delete(safeIndex);
+      reject(new Error(`Frame ${safeIndex + 1} could not be loaded.`));
+    };
+    image.src = frameUrl(safeIndex);
+  });
+
+  state.pendingFrames.set(safeIndex, pending);
+  return pending;
+}
+
+async function drawFrame(index) {
+  const safeIndex = Math.max(0, Math.min(ANDROID_FRAME_COUNT - 1, index));
+  state.requestedFrame = safeIndex;
+
+  try {
+    const image = await loadFrame(safeIndex);
+    if (state.requestedFrame !== safeIndex) return;
+    const context = dom.frameCanvas.getContext("2d", { alpha: false });
+    context.drawImage(image, 0, 0, dom.frameCanvas.width, dom.frameCanvas.height);
+    dom.frameCanvas.dataset.frame = String(safeIndex);
+    state.renderedFrame = safeIndex;
+
+    for (let offset = 1; offset <= 3; offset += 1) {
+      loadFrame(safeIndex + offset).catch(() => {});
+      loadFrame(safeIndex - offset).catch(() => {});
+    }
+  } catch {
+    // Keep the last successfully rendered frame visible.
+  }
+}
+
+async function prefetchFrameFiles() {
+  let cursor = 1;
+  let completed = 1;
+
+  const worker = async () => {
+    while (cursor < ANDROID_FRAME_COUNT) {
+      const index = cursor;
+      cursor += 1;
+      try {
+        const response = await fetch(frameUrl(index), { cache: "force-cache" });
+        if (response.ok) await response.blob();
+      } catch {
+        // A missed prefetch can still be loaded on demand while scrolling.
+      }
+      completed += 1;
+      setLoaderProgress(15 + (completed / ANDROID_FRAME_COUNT) * 80);
+    }
+  };
+
+  await Promise.all(Array.from({ length: 5 }, () => worker()));
+}
+
+async function initialiseFrameSequence() {
+  dom.film.pause();
+  dom.film.querySelectorAll("source").forEach((source) => source.remove());
+  dom.film.removeAttribute("src");
+  dom.film.hidden = true;
+  dom.frameCanvas.hidden = false;
+  dom.frameCanvas.dataset.renderer = "Android frame sequence";
+
+  try {
+    await drawFrame(0);
+    setLoaderProgress(15);
+    await prefetchFrameFiles();
+    state.duration = (ANDROID_FRAME_COUNT - 1) / ANDROID_FRAME_FPS;
+    state.ready = true;
+    finishLoading();
+  } catch {
+    dom.frameCanvas.hidden = true;
+    dom.cardLayer.style.visibility = "visible";
+    dom.cardLayer.style.opacity = "1";
+    dom.cardLayer.style.transform = "none";
+    dom.scrollCue.hidden = true;
+    finishLoading();
+  }
+}
+
 function renderVideoFrame(now) {
   if (state.ready && !state.reducedMotion.matches) {
+    if (state.useFrameSequence) {
+      const desiredFrame = Math.round((state.targetTime / state.duration) * (ANDROID_FRAME_COUNT - 1));
+      if (desiredFrame !== state.requestedFrame) drawFrame(desiredFrame);
+      requestAnimationFrame(renderVideoFrame);
+      return;
+    }
+
     // Quantising to real video frames and limiting seek frequency avoids
     // overwhelming Android hardware decoders during rapid touch scrolling.
     const desiredTime = Math.round(state.targetTime * VIDEO_FPS) / VIDEO_FPS;
@@ -170,6 +295,13 @@ function initialiseFilm() {
     finishLoading();
     return;
   }
+
+  if (state.useFrameSequence) {
+    initialiseFrameSequence();
+    return;
+  }
+
+  dom.film.preload = "auto";
 
   const markReady = () => {
     state.duration = Number.isFinite(dom.film.duration) ? dom.film.duration : state.duration;

@@ -19,10 +19,11 @@
     <title>دعوت‌نامه عروسی | مبینا و امیررضا</title>
     <link rel="preload" href="./assets/invitation/poster.webp" as="image" />
     <link rel="preload" href="./assets/invitation/invitation-card-embroidered.avif" as="image" type="image/avif" />
-    <link rel="stylesheet" href="./styles.css?v=3" />
+    <link rel="stylesheet" href="./styles.css?v=4" />
   </head>
-  <body class="is-loading">
-    <div class="loader" id="loader" role="status" aria-live="polite">
+  <body>
+    <a class="details-link" href="#invitationDetails">مشاهده دعوت‌نامه</a>
+    <div class="loader is-complete" id="loader" role="status" aria-live="polite">
       <div class="loader__thread" aria-hidden="true"></div>
       <p>در حال آماده‌کردن دعوت‌نامه…</p>
       <span id="loaderPercent">۰٪</span>
@@ -60,6 +61,13 @@
           <button class="start-button" id="startButton" type="button" hidden>آغاز دعوت‌نامه</button>
         </div>
       </section>
+      <section class="invitation-details" id="invitationDetails">
+        <img src="./assets/invitation/invitation-card-embroidered.webp" loading="lazy" width="941" height="1672" alt="دعوت‌نامه مبینا و امیررضا" />
+        <p>معشوقه به سامان شد، تا باد چنین بادا…</p>
+        <h1>مبینا نورزاده و امیررضا کشاورز</h1>
+        <p>جمعه ۱۴۰۵/۰۸/۰۸ — ساعت ۱۹ الی ۲۳</p>
+        <p>تالار وصال</p>
+      </section>
     </main>
 
     <audio id="backgroundMusic" preload="metadata" loop>
@@ -74,6 +82,6 @@
         </picture>
       </div>
     </noscript>
-    <script src="./app.js?v=3" defer></script>
+    <script src="./app.js?v=4" defer></script>
   </body>
 </html>

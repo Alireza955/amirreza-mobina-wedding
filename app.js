@@ -235,7 +235,7 @@ async function initialiseFrameSequence() {
   try {
     await drawFrame(0);
     setLoaderProgress(15);
-    await prefetchFrameFiles();
+    // Begin immediately; load only nearby frames instead of blocking on all files.
     state.duration = (ANDROID_FRAME_COUNT - 1) / ANDROID_FRAME_FPS;
     state.ready = true;
     finishLoading();

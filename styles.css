@@ -93,7 +93,10 @@ body.is-loading { overflow: hidden; }
   background: #0a0d09;
 }
 
-.frame-canvas[hidden] { display: none; }
+.frame-canvas[hidden], .wedding-film[hidden] { display: none !important; }
+.details-link { position: fixed; z-index: 110; top: 1rem; right: 1rem; color: white; background: #263329; padding: .7rem 1rem; border-radius: 2rem; }
+.invitation-details { max-width: 520px; margin: auto; padding: 2rem 1rem; text-align: center; background: #e8decd; color: #3d3429; }
+.invitation-details img { width: 100%; height: auto; }
 
 .film-shade {
   position: absolute;

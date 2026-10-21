@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0d09" />
+    <meta name="description" content="دعوت‌نامه عروسی مبینا نورزاده و امیررضا کشاورز" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:title" content="دعوت‌نامه عروسی مبینا و امیررضا" />
+    <meta property="og:description" content="معشوقه به سامان شد، تا باد چنین بادا… جمعه ۱۴۰۵/۰۸/۰۸، تالار وصال" />
+    <meta property="og:url" content="https://alireza955.github.io/amirreza-mobina-wedding/" />
+    <meta property="og:image" content="https://alireza955.github.io/amirreza-mobina-wedding/assets/invitation/share-preview.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="دعوت‌نامه عروسی مبینا و امیررضا" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://alireza955.github.io/amirreza-mobina-wedding/" />
+    <title>دعوت‌نامه عروسی | مبینا و امیررضا</title>
+    <link rel="preload" href="./assets/invitation/poster.webp" as="image" />
+    <link rel="preload" href="./assets/invitation/invitation-card-embroidered.avif" as="image" type="image/avif" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="is-loading">
+    <div class="loader" id="loader" role="status" aria-live="polite">
+      <div class="loader__thread" aria-hidden="true"></div>
+      <p>در حال آماده‌کردن دعوت‌نامه…</p>
+      <span id="loaderPercent">۰٪</span>
+    </div>
+
+    <main>
+      <section class="experience" id="experience" aria-label="دعوت‌نامه تعاملی عروسی">
+        <div class="stage" id="stage">
+          <div class="film-layer" id="filmLayer">
+            <video id="weddingFilm" class="wedding-film" muted playsinline preload="auto" poster="./assets/invitation/poster.webp" aria-label="فیلم کوتاه دعوت‌نامه عروسی مبینا و امیررضا">
+              <source src="./assets/invitation/wedding-film.mp4?v=2" type="video/mp4" />
+            </video>
+            <div class="film-shade" aria-hidden="true"></div>
+          </div>
+
+          <figure class="card-layer" id="cardLayer">
+            <picture>
+              <source srcset="./assets/invitation/invitation-card-embroidered.avif" type="image/avif" />
+              <img src="./assets/invitation/invitation-card-embroidered.webp" alt="دعوت‌نامه عروسی مبینا نورزاده و امیررضا کشاورز، جمعه ۱۴۰۵/۰۸/۰۸، ساعت ۱۹ الی ۲۳، تالار وصال" width="941" height="1672" decoding="async" />
+            </picture>
+            <figcaption class="sr-only">معشوقه به سامان شد، تا باد چنین بادا. مبینا نورزاده و امیررضا کشاورز. جمعه ۱۴۰۵/۰۸/۰۸، ساعت ۱۹ الی ۲۳، تالار وصال.</figcaption>
+          </figure>
+
+          <div class="scroll-cue" id="scrollCue" aria-hidden="true">
+            <span id="scrollMessage">برای آغاز، آرام اسکرول کنید</span>
+            <div class="scroll-cue__line"><i id="scrollProgress"></i></div>
+            <b></b>
+          </div>
+
+          <button class="sound-button" id="soundToggle" type="button" aria-label="پخش موسیقی" aria-pressed="false">
+            <span class="sound-button__icon" aria-hidden="true">♪</span>
+          </button>
+
+          <button class="start-button" id="startButton" type="button" hidden>آغاز دعوت‌نامه</button>
+        </div>
+      </section>
+    </main>
+
+    <audio id="backgroundMusic" preload="metadata" loop>
+      <source src="./assets/invitation/az-cheshm-to-mibinam-web.mp3" type="audio/mpeg" />
+    </audio>
+
+    <noscript>
+      <div class="noscript">
+        <picture>
+          <source srcset="./assets/invitation/invitation-card-embroidered.avif" type="image/avif" />
+          <img src="./assets/invitation/invitation-card-embroidered.webp" alt="دعوت‌نامه عروسی مبینا نورزاده و امیررضا کشاورز" />
+        </picture>
+      </div>
+    </noscript>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

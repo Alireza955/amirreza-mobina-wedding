@@ -1,5 +1,16 @@
 const $ = (selector) => document.querySelector(selector);
 const nativeMapLink = document.querySelector("#nativeMapLink");
+const isAppleMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+if (nativeMapLink && isAppleMobile) {
+  nativeMapLink.setAttribute("aria-expanded", "false");
+  nativeMapLink.setAttribute("aria-controls", "mapChoices");
+  nativeMapLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    const choices = document.querySelector("#mapChoices");
+    choices.hidden = !choices.hidden;
+    nativeMapLink.setAttribute("aria-expanded", String(!choices.hidden));
+  });
+}
 if (nativeMapLink && !/Android/i.test(navigator.userAgent)) {
   nativeMapLink.href = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
     ? "https://maps.apple.com/?daddr=37.692611,49.007250&dirflg=d"
